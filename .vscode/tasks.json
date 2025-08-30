@@ -24,6 +24,20 @@
 			"command": "npm start",
 			"isBackground": false,
 			"group": "build"
+		},
+		{
+			"label": "restart backend",
+			"type": "shell",
+			"command": "npm start",
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "restart backend after role/spec tweaks",
+			"type": "shell",
+			"command": "npm start",
+			"isBackground": false,
+			"group": "build"
 		}
 	]
 }

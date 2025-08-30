@@ -56,6 +56,24 @@ export const getAllBooks = async (_req, res) => {
   }
 };
 
+export const searchBooks = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const filter = q
+      ? {
+          $or: [
+            { title: { $regex: q, $options: 'i' } },
+            { author: { $regex: q, $options: 'i' } },
+          ],
+        }
+      : {};
+    const books = await Book.find(filter).sort({ createdAt: -1 });
+    res.status(200).json({ message: "Books retrieved", books });
+  } catch (error) {
+    res.status(500).json({ message: "Error searching books", error: error.message });
+  }
+};
+
 export const getBookById = async (req, res) => {
   try {
     const { id } = req.params;

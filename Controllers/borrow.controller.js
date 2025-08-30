@@ -30,13 +30,13 @@ export const borrowBook = async (req, res) => {
 
 export const returnBook = async (req, res) => {
   try {
-  const { userId, bookId } = req.body;
-    if (!userId || !bookId) {
+  const { bookId } = req.body;
+  if (!bookId) {
       return res
         .status(400)
-        .json({ message: "Please provide userId and bookId" });
+    .json({ message: "Please provide bookId" });
     }
-  const borrowRecord = await Borrow.findOne({ userId, bookId, returnDate: null });
+  const borrowRecord = await Borrow.findOne({ userId: req.user.id, bookId, returnDate: null });
     if (!borrowRecord) {
       return res.status(404).json({ message: "Borrow record not found or already returned" });
     }
@@ -69,8 +69,8 @@ export const getBorrowRecords = async (req, res) => {
       if (book && user) {
         result.push({
           book: {
-            borrowerName: user.Name,
-            BorrowerTitle: book.title,
+            borrowerName: user?.name,
+            title: book.title,
             borrowedDate: record.borrowedDate,
             returnDate: record.returnDate ? "Returned" : "Not Returned",
           },
