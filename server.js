@@ -1,3 +1,4 @@
+// server.js
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -10,20 +11,19 @@ import contactRoutes from './routes/contact.route.js';
 
 dotenv.config();
 const app = express();
-// Use 5001 by default to avoid macOS AirPlay/AirTunes conflict on port 5000
 const PORT = process.env.PORT || 5001;
 
 // CORS configuration
 const corsOptions = {
     origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        
+
         const allowedOrigins = [
             'http://localhost:3000',
             'http://localhost:3001',
             'http://127.0.0.1:3000',
             'http://127.0.0.1:3001',
+            'https://your-frontend.vercel.app' // 👈 add your deployed frontend here
         ];
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
@@ -34,7 +34,7 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     credentials: true,
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
